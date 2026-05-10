@@ -9,11 +9,11 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   
+  @Post('register')
   @ApiOperation({ summary: 'Регистрация нового пользователя' })
   @ApiBody({ type: RegisterDto })
   @ApiResponse({ status: 201, description: 'Пользователь успешно создан', type: RegisterResponseDto })
   @ApiResponse({ status: 409, description: 'Email уже существует' })
-  @Post('register')
   async register(@Body() dto: RegisterDto) {
     return this.authService.register(dto.email, dto.password);
   }
