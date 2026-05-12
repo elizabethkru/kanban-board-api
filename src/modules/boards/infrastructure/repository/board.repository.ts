@@ -1,34 +1,33 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { BoardSchema } from '../schemas/board.schema';
+import { BoardAggregate } from '../../domain/board.aggregate';
+import { IBoardRepository } from '../../ports/board.repository.interface';
+import { BaseRepository } from 'src/modules/shared/ifrastructure/repositories/base.repository';
+import { BoardUuid } from '../../domain/value-objects/board-uuid.vo';
 
 @Injectable()
-export class BoardRepository {
-  constructor(
-    @InjectRepository(BoardSchema)
-    private repo: Repository<BoardSchema>,
-  ) {}
-
-  async create(title: string, userId: string): Promise<BoardSchema> {
-    const board = this.repo.create({ title, userId });
-    return this.repo.save(board);
+export class TypeOrmBoardRepository 
+extends BaseRepository<BoardAggregate> 
+implements IBoardRepository
+{
+  constructor(@InjectDataSource() connection: DataSource)
+  {
+    super(connection, BoardSchema);
+  }
+  findById(uuid: BoardUuid): Promise<BoardAggregate | null> {
+    throw new Error('Method not implemented.');
+  }
+  findAllByUserId(userId: string): Promise<BoardAggregate[]> {
+    throw new Error('Method not implemented.');
+  }
+  delete(uuid: BoardUuid): Promise<void> {
+    throw new Error('Method not implemented.');
   }
 
-  async findAllByUserId(userId: string): Promise<BoardSchema[]> {
-    return this.repo.find({ where: { userId }, order: { createdAt: 'DESC' } });
+  async save(board: BoardAggregate): Promise<BoardAggregate> {
+    return this.manager.save(board);
   }
 
-  async findById(uuid: string): Promise<BoardSchema | null> {
-    return this.repo.findOneBy({ uuid });
-  }
-
-  async update(uuid: string, title: string): Promise<BoardSchema | null> {
-    await this.repo.update(uuid, { title });
-    return this.findById(uuid);
-  }
-
-  async delete(uuid: string): Promise<void> {
-    await this.repo.delete(uuid);
-  }
 }

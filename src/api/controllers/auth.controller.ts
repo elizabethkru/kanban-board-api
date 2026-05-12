@@ -24,7 +24,6 @@ export class AuthController {
   @ApiBody({ type: LoginDto })
   @ApiResponse({ status: 200, description: 'Успешный логин', type: LoginResponseDto })
   @ApiResponse({ status: 401, description: 'Неверные учетные данные' })
-  @HttpCode(HttpStatus.OK)
   async login(@Body() dto: LoginDto) {
     return this.authService.login(dto.email, dto.password);
   }
