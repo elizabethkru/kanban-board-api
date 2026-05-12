@@ -27,7 +27,9 @@ export class BoardsController {
       title: dto.title,
       userId: req.user.uuid,
     });
-    return this.commandBus.execute(command);
+
+    console.log(command)
+    return await this.commandBus.execute(command);
   }
 
   @Get()
