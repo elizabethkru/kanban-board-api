@@ -2,8 +2,6 @@ import { CommandHandler, EventPublisher, ICommandHandler } from "@nestjs/cqrs";
 import { CreateBoardCommand } from "./create-board.command";
 import { BoardTitle } from "src/modules/boards/domain/value-objects/board-title.vo";
 import { BoardAggregate } from "src/modules/boards/domain/board.aggregate";
-import { Inject } from "@nestjs/common";
-import type { IBoardRepository } from "src/modules/boards/ports/board.repository.interface";
 import { TypeOrmBoardRepository } from "src/modules/boards/infrastructure/repository/board.repository";
 
 

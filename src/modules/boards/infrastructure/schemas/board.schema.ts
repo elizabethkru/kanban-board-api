@@ -28,7 +28,7 @@ export const BoardSchema = new EntitySchema<BoardAggregate>({
       },
     },
       userId: {
-      type: 'string',
+      type: 'uuid',
     },
         createdAt: {
       type: 'timestamptz',

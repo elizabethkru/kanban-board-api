@@ -1,8 +1,6 @@
 // src/common/guards/board-owner.guard.ts
 import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
-import * as boardRepositoryInterface from '../../modules/boards/ports/board.repository.interface';
 import { BoardUuid } from '../../modules/boards/domain/value-objects/board-uuid.vo';
-import type { IBoardRepository } from '../../modules/boards/ports/board.repository.interface';
 import { TypeOrmBoardRepository } from 'src/modules/boards/infrastructure/repository/board.repository';
 
 @Injectable()

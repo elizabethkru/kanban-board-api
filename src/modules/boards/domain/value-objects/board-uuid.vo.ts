@@ -12,4 +12,9 @@ export class BoardUuid {
   }
 
   toString = (): string => this.value;
+
+  static fromString(value: string): BoardUuid {
+    if (!value) throw new Error('UUID cannot be empty');
+    return new BoardUuid(value);
+  }
 }
