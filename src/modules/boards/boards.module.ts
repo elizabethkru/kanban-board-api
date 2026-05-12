@@ -5,6 +5,7 @@ import { BoardSchema } from './infrastructure/schemas/board.schema';
 import { TypeOrmBoardRepository } from './infrastructure/repository/board.repository';
 import { commandHandlers } from './application/command';
 import { CqrsModule } from '@nestjs/cqrs';
+import { BoardOwnerGuard } from 'src/common/guards/board-owner.guard';
 
 
 export const BOARD_REPOSITORY_TOKEN = 'BOARD_REPOSITORY';
@@ -12,9 +13,10 @@ export const BOARD_REPOSITORY_TOKEN = 'BOARD_REPOSITORY';
 @Module({
   imports: [TypeOrmModule.forFeature([BoardSchema]), CqrsModule],
   providers: [
+    BoardOwnerGuard,
     TypeOrmBoardRepository,
     ...commandHandlers,
   ],
-  exports: [TypeOrmBoardRepository],
+  exports: [TypeOrmBoardRepository, BoardOwnerGuard],
 })
 export class BoardsModule {}
