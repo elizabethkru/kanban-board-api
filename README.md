@@ -18,7 +18,7 @@ Kanban Board API — это серверное приложение для уп�
 - **База данных**: PostgreSQL
 - **ORM**: TypeORM
 - **Real-Time**: WebSockets (Socket.IO)
-- **Пакетный менеджер**: npm
+- **Пакетный менеджер**: yarn
 
 ## Структура проекта
 
@@ -43,7 +43,7 @@ Kanban Board API — это серверное приложение для уп�
    cd kanban-board-api
 2. Установите зависимости:
 
-   npm install
+   yarn install
 
 ## Настройка
 
@@ -64,12 +64,12 @@ Kanban Board API — это серверное приложение для уп�
 
 - Режим разработки с автоперезагрузкой:
 
-  npm run start:dev
+  yarn start:dev
 
 - Сборка и запуск в production:
 
-  npm run build
-  npm run start:prod
+  yarn build
+  yarn start:prod
 
 ## Основные эндпоинты API
 
