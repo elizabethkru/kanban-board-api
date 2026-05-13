@@ -4,6 +4,7 @@ import { AuthModule } from 'src/modules/auth/auth.module';
 import { BoardsModule } from 'src/modules/boards/boards.module';
 import { BoardsController } from './controllers/boards.controller';
 import { CqrsModule } from '@nestjs/cqrs';
+import { ColumnsService } from 'src/modules/columns/columns.service';
 
 @Module({
   imports: [AuthModule, BoardsModule, CqrsModule],

@@ -1,13 +1,11 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetBoardsQuery } from './get-boards.query';
-import * as boardRepositoryInterface from 'src/modules/boards/ports/board.repository.interface';
+import { TypeOrmBoardRepository } from '../../../infrastructure/repository/board.repository';
 import { BoardResponseDto } from 'src/api/controllers/output/create-board.output';
-import type { IBoardRepository } from 'src/modules/boards/ports/board.repository.interface';
-
 
 @QueryHandler(GetBoardsQuery)
 export class GetBoardsHandler implements IQueryHandler<GetBoardsQuery> {
-  constructor(private readonly boardRepository: IBoardRepository) {}
+  constructor(private readonly boardRepository: TypeOrmBoardRepository) {}
 
   async execute(query: GetBoardsQuery): Promise<BoardResponseDto[]> {
     const boards = await this.boardRepository.findAllByUserId(query.userId);

@@ -8,6 +8,10 @@ import { UpdateBoardDto } from './dto/update-board.dto';
 import { CreateBoardCommand } from 'src/modules/boards/application/command/create-board/create-board.command';
 import { BoardResponseDto } from './output/create-board.output';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { GetBoardsQuery } from 'src/modules/boards/application/queries/get-boards/get-boards.query';
+import { GetBoardQuery } from 'src/modules/boards/application/queries/get-board/get-board.query';
+import { UpdateBoardCommand } from 'src/modules/boards/application/command/update-board/update-board.command';
+import { DeleteBoardCommand } from 'src/modules/boards/application/command/delete-board/delete-board.command';
 
 @ApiTags('boards')
 @ApiBearerAuth()
@@ -32,34 +36,36 @@ export class BoardsController {
     return await this.commandBus.execute(command);
   }
 
-  @Get()
+    @Get()
   @ApiOperation({ summary: 'Получить все доски пользователя' })
   async findAll(@Request() req) {
-    // Пока оставим заглушку – позже добавим команду UpdateBoardCommand
-    return { message: 'Not implemented yet' };
+    const query = new GetBoardsQuery(req.user.uuid);
+    return this.queryBus.execute(query);
   }
 
-  @Get(':boardId')
+    @Get(':boardId')
   @ApiOperation({ summary: 'Получить одну доску по id' })
   @UseGuards(BoardOwnerGuard)
   async findOne(@Param('boardId') boardId: string, @Request() req) {
-    // Пока оставим заглушку – позже добавим команду UpdateBoardCommand
-    return { message: 'Not implemented yet' };
+    const query = new GetBoardQuery(boardId, req.user.uuid);
+    return this.queryBus.execute(query);
   }
 
-  @Put(':boardId')
-  @ApiOperation({ summary: 'Обновить доску' })
-  @UseGuards(BoardOwnerGuard)
-  async update(@Param('boardId') boardId: string, @Body() dto: UpdateBoardDto) {
-    // Пока оставим заглушку – позже добавим команду UpdateBoardCommand
-    return { message: 'Not implemented yet' };
-  }
 
-  @Delete(':boardId')
-  @ApiOperation({ summary: 'Удалить доску' })
-  @UseGuards(BoardOwnerGuard)
-  async delete(@Param('boardId') boardId: string) {
-    // Позже добавим команду DeleteBoardCommand
-    return { message: 'Not implemented yet' };
-  }
+@Put(':boardId')
+@ApiOperation({ summary: 'Обновить доску' })
+@UseGuards(BoardOwnerGuard)
+async update(@Param('boardId') boardId: string, @Body() dto: UpdateBoardDto, @Request() req) {
+  const command = new UpdateBoardCommand({ id: boardId, title: dto.title, userId: req.user.uuid });
+  return this.commandBus.execute(command);
+}
+
+@Delete(':boardId')
+@ApiOperation({ summary: 'Удалить доску' })
+@UseGuards(BoardOwnerGuard)
+async delete(@Param('boardId') boardId: string, @Request() req) {
+  const command = new DeleteBoardCommand({ boardUuid: boardId, userId: req.user.uuid });
+  await this.commandBus.execute(command);
+  return { message: 'Board deleted successfully' };
+}
 }

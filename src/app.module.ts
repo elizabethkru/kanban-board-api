@@ -7,6 +7,8 @@ import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { BoardsModule } from './modules/boards/boards.module';
 import { BoardSchema } from './modules/boards/infrastructure/schemas/board.schema';
+import { ColumnsModule } from './modules/columns/columns.module';
+import { ColumnsService } from './modules/columns/columns.service';
 
 @Module({
   imports: [

@@ -6,6 +6,7 @@ import { BoardAggregate } from '../../domain/board.aggregate';
 import { IBoardRepository } from '../../ports/board.repository.interface';
 import { BaseRepository } from 'src/modules/shared/ifrastructure/repositories/base.repository';
 import { BoardUuid } from '../../domain/value-objects/board-uuid.vo';
+import { BoardTitle } from '../../domain/value-objects/board-title.vo';
 
 @Injectable()
 export class TypeOrmBoardRepository implements IBoardRepository {
@@ -25,15 +26,38 @@ export class TypeOrmBoardRepository implements IBoardRepository {
     await this.ormRepo.save(schema);
     return board;
   }
-  findById(uuid: BoardUuid): Promise<BoardAggregate | null> {
-    throw new Error('Method not implemented.');
-  }
-  findAllByUserId(userId: string): Promise<BoardAggregate[]> {
-    throw new Error('Method not implemented.');
-  }
-  delete(uuid: BoardUuid): Promise<void> {
-    throw new Error('Method not implemented.');
+  async findById(uuid: BoardUuid): Promise<BoardAggregate | null> {
+    const schema = await this.ormRepo.findOneBy({ uuid: uuid.toString() });
+    if (!schema) return null;
+    return this.toDomain(schema);
   }
 
+  async findAllByUserId(userId: string): Promise<BoardAggregate[]> {
+    const schemas = await this.ormRepo.find({ where: { userId } });
+    return schemas.map(s => this.toDomain(s));
+  }
 
+  async delete(uuid: BoardUuid): Promise<void> {
+    await this.ormRepo.delete({ uuid: uuid.toString() });
+  }
+
+  // Метод для обновления – он не в интерфейсе, но может пригодиться для UpdateBoardHandler
+  async update(board: BoardAggregate): Promise<BoardAggregate> {
+    const schema = await this.ormRepo.findOneBy({ uuid: board.uuid.toString() });
+    if (!schema) throw new Error('Board not found');
+    schema.title = board.title.getTitle();
+    schema.updatedAt = board.updatedAt;
+    await this.ormRepo.save(schema);
+    return board;
+  }
+
+  private toDomain(schema: BoardSchema): BoardAggregate {
+    return BoardAggregate.reconstitute(
+      BoardUuid.fromString(schema.uuid),
+      new BoardTitle(schema.title),
+      schema.userId,
+      schema.createdAt,
+      schema.updatedAt,
+    );
+  }
 }

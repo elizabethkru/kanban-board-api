@@ -6,6 +6,7 @@ import { TypeOrmBoardRepository } from './infrastructure/repository/board.reposi
 import { commandHandlers } from './application/command';
 import { CqrsModule } from '@nestjs/cqrs';
 import { BoardOwnerGuard } from 'src/common/guards/board-owner.guard';
+import { queryHandlers } from './application/queries';
 
 
 export const BOARD_REPOSITORY_TOKEN = 'BOARD_REPOSITORY';
@@ -16,6 +17,7 @@ export const BOARD_REPOSITORY_TOKEN = 'BOARD_REPOSITORY';
     BoardOwnerGuard,
     TypeOrmBoardRepository,
     ...commandHandlers,
+    ...queryHandlers,
   ],
   exports: [TypeOrmBoardRepository, BoardOwnerGuard],
 })
