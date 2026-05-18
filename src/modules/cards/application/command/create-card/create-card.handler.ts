@@ -10,6 +10,7 @@ import { CardPosition } from '../../../domain/value-objects/card-position.vo';
 import { CardAggregate } from '../../../domain/card.aggregate';
 import { ColumnUuid } from '../../../../columns/domain/value-objects/column-uuid.vo';
 import { BoardUuid } from '../../../../boards/domain/value-objects/board-uuid.vo';
+import { BoardGateway } from '../../../../websocket/board.gateway';
 
 @CommandHandler(CreateCardCommand)
 export class CreateCardHandler implements ICommandHandler<CreateCardCommand> {
@@ -17,6 +18,7 @@ export class CreateCardHandler implements ICommandHandler<CreateCardCommand> {
     private readonly cardRepository: TypeOrmCardRepository,
     private readonly columnRepository: TypeOrmColumnRepository,
     private readonly boardRepository: TypeOrmBoardRepository,
+    private readonly boardGateway: BoardGateway,
   ) {}
 
   async execute(command: CreateCardCommand): Promise<any> {
@@ -45,6 +47,14 @@ export class CreateCardHandler implements ICommandHandler<CreateCardCommand> {
       description,
     );
     await this.cardRepository.save(card);
+
+    // ✅ Отправляем WebSocket-событие
+    this.boardGateway.emitToBoard(column.boardId, 'cardCreated', {
+      cardId: card.uuid.toString(),
+      columnId: command.columnId,
+      title: command.title,
+      position: card.position.getValue(),
+    });
 
     return {
       uuid: card.uuid.toString(),

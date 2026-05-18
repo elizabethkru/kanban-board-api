@@ -11,12 +11,13 @@ import { ColumnsModule } from './modules/columns/columns.module';
 import { ColumnSchema } from './modules/columns/infrastructure/schemas/columns.schema';
 import { CardsModule } from './modules/cards/cards.module';
 import { CardSchema } from './modules/cards/infrastructure/schemas/cards.schema';
+import { WebSocketModule } from './modules/websocket/websocket.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
+      imports: [ConfigModule, WebSocketModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',

@@ -1,0 +1,19 @@
+import { Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { BoardGateway } from './board.gateway';
+
+@Module({
+  imports: [
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        secret: config.get('JWT_SECRET'),
+      }),
+    }),
+  ],
+  providers: [BoardGateway],
+  exports: [BoardGateway],
+})
+export class WebSocketModule {}
