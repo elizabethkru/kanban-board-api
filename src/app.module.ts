@@ -9,6 +9,7 @@ import { BoardsModule } from './modules/boards/boards.module';
 import { BoardSchema } from './modules/boards/infrastructure/schemas/board.schema';
 import { ColumnsModule } from './modules/columns/columns.module';
 import { ColumnsService } from './modules/columns/columns.service';
+import { ColumnSchema } from './modules/columns/schemas/columns.schema';
 
 @Module({
   imports: [
@@ -23,8 +24,8 @@ import { ColumnsService } from './modules/columns/columns.service';
         username: configService.get<string>('DB_USER'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
-        entities: [UserSchema, BoardSchema],
-        synchronize: true,          // обязательно false
+        entities: [UserSchema, BoardSchema, ColumnSchema],
+        synchronize: true, // обязательно false
         migrationsRun: true,
         logging: true,
       }),
@@ -33,6 +34,7 @@ import { ColumnsService } from './modules/columns/columns.service';
     AuthModule,
     ApiModule,
     BoardsModule,
+    ColumnsModule,
   ],
 })
 export class AppModule {}

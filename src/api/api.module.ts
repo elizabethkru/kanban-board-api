@@ -4,10 +4,11 @@ import { AuthModule } from 'src/modules/auth/auth.module';
 import { BoardsModule } from 'src/modules/boards/boards.module';
 import { BoardsController } from './controllers/boards.controller';
 import { CqrsModule } from '@nestjs/cqrs';
-import { ColumnsService } from 'src/modules/columns/columns.service';
+import { ColumnsController } from './controllers/colums.controller';
+import { ColumnsModule } from 'src/modules/columns/columns.module';
 
 @Module({
-  imports: [AuthModule, BoardsModule, CqrsModule],
-  controllers: [AuthController, BoardsController],
+  imports: [AuthModule, BoardsModule, ColumnsModule, CqrsModule],
+  controllers: [AuthController, BoardsController, ColumnsController],
 })
 export class ApiModule {}
