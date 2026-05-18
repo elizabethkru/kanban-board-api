@@ -6,9 +6,23 @@ import { BoardsController } from './controllers/boards.controller';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ColumnsController } from './controllers/colums.controller';
 import { ColumnsModule } from 'src/modules/columns/columns.module';
+import { CardsController } from './controllers/cards.controller';
+import { CardsModule } from 'src/modules/cards/cards.module';
 
 @Module({
-  imports: [AuthModule, BoardsModule, ColumnsModule, CqrsModule],
-  controllers: [AuthController, BoardsController, ColumnsController],
+  imports: [
+    AuthModule,
+    BoardsModule,
+    ColumnsModule,
+    BoardsModule,
+    CardsModule,
+    CqrsModule,
+  ],
+  controllers: [
+    AuthController,
+    BoardsController,
+    ColumnsController,
+    CardsController,
+  ],
 })
 export class ApiModule {}

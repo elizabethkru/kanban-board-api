@@ -17,6 +17,8 @@ import { CreateColumnCommand } from 'src/modules/columns/application/command/cre
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 import { GetColumnsByBoardQuery } from 'src/modules/columns/application/queries/get-column-by-board/get-columns-by-board.query';
 import { UpdateColumnCommand } from 'src/modules/columns/application/command/update-column/update-column.command';
+import { GetColumnQuery } from 'src/modules/columns/application/queries/get-column/get-column.query';
+import { DeleteColumnCommand } from 'src/modules/columns/application/command/delete-column/delete-column.command';
 
 @ApiTags('columns')
 @ApiBearerAuth()
@@ -44,6 +46,12 @@ export class ColumnsController {
     return this.queryBus.execute(query);
   }
 
+  @Get(':columnId')
+  async getOne(@Param('columnId') columnId: string, @Request() req) {
+    const query = new GetColumnQuery(columnId, req.user.uuid);
+    return this.queryBus.execute(query);
+  }
+
   @Put(':columnId')
   @UseGuards(ColumnOwnerGuard)
   async update(
@@ -53,5 +61,13 @@ export class ColumnsController {
   ) {
     const command = new UpdateColumnCommand(columnId, dto.title, req.user.uuid);
     return this.commandBus.execute(command);
+  }
+
+  @Delete(':columnId')
+  @UseGuards(ColumnOwnerGuard)
+  async delete(@Param('columnId') columnId: string, @Request() req) {
+    const command = new DeleteColumnCommand(columnId, req.user.uuid);
+    await this.commandBus.execute(command);
+    return { message: 'Column deleted successfully' };
   }
 }

@@ -6,7 +6,7 @@ import { TypeOrmColumnRepository } from './infrastructure/repository/typeorm-col
 import { BoardsModule } from '../boards/boards.module';
 import { commandHandlers } from './application/command';
 import { queryHandlers } from './application/queries';
-import { ColumnSchema } from './schemas/columns.schema';
+import { ColumnSchema } from './infrastructure/schemas/columns.schema';
 
 @Module({
   imports: [TypeOrmModule.forFeature([ColumnSchema]), CqrsModule, BoardsModule],

@@ -5,8 +5,8 @@ import { ColumnAggregate } from '../../domain/column.aggregate';
 import { IColumnRepository } from '../../ports/column.repository.interface';
 import { ColumnUuid } from '../../domain/value-objects/column-uuid.vo';
 import { ColumnPosition } from '../../domain/value-objects/column-position.vo';
-import { ColumnSchema } from '../../schemas/columns.schema';
 import { ColumnTitle } from '../../domain/value-objects/colunm-title.vo';
+import { ColumnSchema } from '../schemas/columns.schema';
 
 @Injectable()
 export class TypeOrmColumnRepository implements IColumnRepository {

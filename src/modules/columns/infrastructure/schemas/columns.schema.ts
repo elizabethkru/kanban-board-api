@@ -1,3 +1,4 @@
+import { BoardSchema } from 'src/modules/boards/infrastructure/schemas/board.schema';
 import {
   Entity,
   Column,
@@ -7,7 +8,6 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { BoardSchema } from '../../boards/infrastructure/schemas/board.schema';
 
 @Entity('columns')
 export class ColumnSchema {

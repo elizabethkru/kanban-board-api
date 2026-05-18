@@ -8,8 +8,9 @@ import { AuthModule } from './modules/auth/auth.module';
 import { BoardsModule } from './modules/boards/boards.module';
 import { BoardSchema } from './modules/boards/infrastructure/schemas/board.schema';
 import { ColumnsModule } from './modules/columns/columns.module';
-import { ColumnsService } from './modules/columns/columns.service';
-import { ColumnSchema } from './modules/columns/schemas/columns.schema';
+import { ColumnSchema } from './modules/columns/infrastructure/schemas/columns.schema';
+import { CardsModule } from './modules/cards/cards.module';
+import { CardSchema } from './modules/cards/infrastructure/schemas/cards.schema';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { ColumnSchema } from './modules/columns/schemas/columns.schema';
         username: configService.get<string>('DB_USER'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
-        entities: [UserSchema, BoardSchema, ColumnSchema],
+        entities: [UserSchema, BoardSchema, ColumnSchema, CardSchema],
         synchronize: true, // обязательно false
         migrationsRun: true,
         logging: true,
@@ -35,6 +36,7 @@ import { ColumnSchema } from './modules/columns/schemas/columns.schema';
     ApiModule,
     BoardsModule,
     ColumnsModule,
+    CardsModule,
   ],
 })
 export class AppModule {}
