@@ -12,6 +12,7 @@ import { MoveCardHandler } from './application/command/move-card/move-card.handl
 import { GetCardsByColumnHandler } from './application/queries/get-card-by-column/get-cards-by-column.handler';
 import { CardSchema } from './infrastructure/schemas/cards.schema';
 import { CardOwnerGuard } from 'src/common/guards/card-owner.guard';
+import { WebSocketModule } from '../websocket/websocket.module';
 
 const commandHandlers = [
   CreateCardHandler,
@@ -27,6 +28,7 @@ const queryHandlers = [GetCardsByColumnHandler, GetCardHandler];
     CqrsModule,
     ColumnsModule,
     BoardsModule,
+    WebSocketModule,
   ],
   providers: [
     TypeOrmCardRepository,
