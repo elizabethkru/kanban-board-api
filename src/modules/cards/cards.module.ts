@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmCardRepository } from './infrastructure/repository/typeorm-card.repository';
@@ -26,7 +26,7 @@ const queryHandlers = [GetCardsByColumnHandler, GetCardHandler];
   imports: [
     TypeOrmModule.forFeature([CardSchema]),
     CqrsModule,
-    ColumnsModule,
+    forwardRef(() => ColumnsModule),
     BoardsModule,
     WebSocketModule,
   ],

@@ -27,6 +27,7 @@ async function bootstrap() {
     res.send(YAML.stringify(document));
   });
 
+  app.enableCors();
   await app.listen(process.env.PORT ?? 3000);
 
   logger.log('Application is running on: http://localhost:3000');
